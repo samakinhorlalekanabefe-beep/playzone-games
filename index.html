@@ -3,346 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>PlayZone - Tap Rush</title>
+  <title>PlayZone</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
     body {
-      background: #0f172a;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111827;
       color: white;
-      min-height: 100vh;
+      text-align: center;
     }
 
     header {
-      text-align: center;
-      padding: 22px 15px;
-      background: #111827;
-      border-bottom: 1px solid #334155;
+      background: #2563eb;
+      padding: 25px;
+      font-size: 30px;
+      font-weight: bold;
     }
 
-    header h1 {
-      color: #38bdf8;
-      font-size: 32px;
-    }
-
-    header p {
-      color: #94a3b8;
-      margin-top: 7px;
+    .container {
+      padding: 40px 20px;
     }
 
     .game {
-      width: 92%;
-      max-width: 650px;
-      margin: 25px auto;
+      max-width: 400px;
+      margin: auto;
+      background: #1f2937;
+      padding: 30px;
+      border-radius: 20px;
     }
 
-    .intro {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .intro h2 {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
-
-    .intro p {
-      color: #94a3b8;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .stat {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 15px 5px;
-      text-align: center;
-    }
-
-    .stat span {
-      display: h;
-      color: #94a3b8;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
-
-    .stat strong {
-      font-size: 22px;
-      color: #38bdf8;
-    }
-
-    #gameArea {
-      position: relative;
-      height: 420px;
-      background: #1e293b;
-      border: 2px solid #334155;
-      border-radius: 18px;
-      overflow: hidden;
-    }
-
-    #target {
-      display: none;
-      position: absolute;
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      border: none;
-      background: #38bdf8;
-      color: #0f172a;
-      font-size: 27px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
-    }
-
-    #target:active {
-      transform: scale(0.9);
-    }
-
-    .start-area {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .start-area p {
-      color: #94a3b8;
-      margin-bottom: 18px;
-    }
-
-    button.main-btn {
-      border: none;
-      background: #0ea5e9;
+    button {
+      background: #22c55e;
       color: white;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-size: 17px;
-      font-weight: bold;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 18px;
       cursor: pointer;
     }
 
-    button.main-btn:active {
-      transform: scale(0.97);
+    button:hover {
+      background: #16a34a;
     }
 
-    #result {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-      padding: 20px;
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 15px;
-    }
-
-    #result h3 {
-      font-size: 25px;
-      margin-bottom: 8px;
-    }
-
-    #finalScore {
-      color: #38bdf8;
-      font-size: 35px;
-      font-weight: bold;
-      margin: 8px 0;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #64748b;
-    }
-
-    @media (max-width: 450px) {
-      #gameArea {
-        height: 380px;
-      }
-
-      #target {
-        width: 58px;
-        height: 58px;
-      }
+    #message {
+      margin-top: 25px;
+      font-size: 22px;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>🎮 PlayZone</h1>
-    <p>Play. Challenge. Beat the Score.</p>
-  </header>
+  <header>🎮 PlayZone</header>
 
-  <main class="game">
+  <div class="container">
+    <div class="game">
+      <h1>Tap Rush</h1>
+      <p>Tap the button as many times as you can!</p>
 
-    <section class="intro">
-      <h2>⚡ Tap Rush</h2>
-      <p>Tap the target as many times as you can!</p>
-    </section>
+      <h2>Score: <span id="score">0</span></h2>
 
-    <section class="stats">
+      <button onclick="tap()">TAP!</button>
 
-      <div class="stat">
-        <span>TIME</span>
-        <strong id="time">30</strong>
-      </div>
-
-      <div class="stat">
-        <span>SCORE</span>
-        <strong id="score">0</strong>
-      </div>
-
-      <div class="stat">
-        <span>BEST</span>
-        <strong id="best">0</strong>
-      </div>
-
-    </section>
-
-    <section id="gameArea">
-
-      <div class="start-area" id="startArea">
-        <p>Ready to test your speed?</p>
-        <button class="main-btn" id="startButton">
-          START GAME
-        </button>
-      </div>
-
-      <button id="target" type="button">⚡</button>
-
-    </section>
-
-    <section id="result">
-      <h3>🏆 Game Over!</h3>
-
-      <p>Your score:</p>
-
-      <div id="finalScore">0</div>
-
-      <button class="main-btn" id="restartButton">
-        PLAY AGAIN
-      </button>
-    </section>
-
-  </main>
-
-  <footer>
-    <p>© 2026 PlayZone</p>
-  </footer>
+      <p id="message">Start playing!</p>
+    </div>
+  </div>
 
   <script>
-    const startButton = document.getElementById("startButton");
-    const restartButton = document.getElementById("restartButton");
-    const target = document.getElementById("target");
-    const gameArea = document.getElementById("gameArea");
-    const startArea = document.getElementById("startArea");
-    const result = document.getElementById("result");
-
-    const timeDisplay = document.getElementById("time");
-    const scoreDisplay = document.getElementById("score");
-    const bestDisplay = document.getElementById("best");
-    const finalScore = document.getElementById("finalScore");
-
     let score = 0;
-    let timeLeft = 30;
-    let timer = null;
-    let bestScore = 0;
-    let playing = false;
 
-    function moveTarget() {
-      const targetSize = target.offsetWidth;
-
-      const maxX = gameArea.clientWidth - targetSize;
-      const maxY = gameArea.clientHeight - targetSize;
-
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
-
-      target.style.left = x + "px";
-      target.style.top = y + "px";
-    }
-
-    function startGame() {
-      score = 0;
-      timeLeft = 30;
-      playing = true;
-
-      scoreDisplay.textContent = score;
-      timeDisplay.textContent = timeLeft;
-
-      startArea.style.display = "none";
-      result.style.display = "none";
-      target.style.display = "block";
-
-      moveTarget();
-
-      clearInterval(timer);
-
-      timer = setInterval(function() {
-
-        timeLeft--;
-
-        timeDisplay.textContent = timeLeft;
-
-        if (timeLeft <= 0) {
-          endGame();
-        }
-
-      }, 1000);
-    }
-
-    function endGame() {
-      playing = false;
-
-      clearInterval(timer);
-
-      target.style.display = "none";
-
-      finalScore.textContent = score;
-
-      if (score > bestScore) {
-        bestScore = score;
-      }
-
-      bestDisplay.textContent = bestScore;
-
-      result.style.display = "block";
-    }
-
-    target.addEventListener("click", function() {
-
-      if (!playing) {
-        return;
-      }
-
+    function tap() {
       score++;
+      document.getElementById("score").textContent = score;
 
-      scoreDisplay.textContent = score;
-
-      moveTarget();
-    });
-
-    startButton.addEventListener("click", startGame);
-
-    restartButton.addEventListener("click", startGame);
+      if (score >= 10) {
+        document.getElementById("message").textContent =
+          "🔥 Great job! Keep playing!";
+      }
+    }
   </script>
 
 </body>
